@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            naive bayes
+        </title>
+        <meta charset="utf-8">
+        <style>
+            table {
+                border-collapse: collapse;
+                border: 2px black solid;
+                font: 12px sans-serif;
+            }
+            td,th {
+                border: 1px black solid;
+                padding: 5px;
+            }
+        </style>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/script.js" type="text/javascript"></script>
+        <script src="js/tabeltocsv.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <table id='table'></table>
+        <p id="load">sabar !!!! lagi proses tidak sampai 5 detik.</p>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                function edittable(){
+                    for (var i = 0; i<train.length; i++) {
+                        $('#table').append("<tr><td>"+train[i][0]+"</td></tr>");
+                    }
+                }
+                $.ajax({
+                    url:"TrainsetTugas1ML.csv",
+                    dataType:"text",
+                    success:function(d){
+                        datatrain =  d.split(/\r?\n|\r/);
+                        for (var i = 0; i<datatrain.length-2; i++) {
+                            preproses(datatrain[i+1].split(","));
+                        }
+                    }
+                });
+                $.ajax({
+                    url:"TestsetTugas1ML.csv",
+                    dataType:"text",
+                    success:function(d){
+                        datatest =  d.split(/\r?\n|\r/);
+                        for (var i = 0; i<datatest.length-2; i++) {
+                            $('#table').append("<tr><td>"+getlabel(datatest[i+1].split(","))+"</td></tr>");
+                        }
+                        //edittable();
+                        donlot("TebakanTugas1ML.csv");
+                        $("#load").hide();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
